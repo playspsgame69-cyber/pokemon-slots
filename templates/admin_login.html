@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Admin - Pokémon Slots{% endblock %}
+
+{% block content %}
+<header class="header">
+  <div class="logo">⚡ Admin</div>
+</header>
+
+<main class="main">
+  <section class="card" style="max-width:400px;margin:2rem auto">
+    <h2>Panel de Administración</h2>
+    {% if error %}
+      <p class="error">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="/admin/login" class="form-box">
+      <input type="password" name="password" placeholder="Contraseña de admin" required>
+      <button type="submit" class="btn primary">Entrar</button>
+    </form>
+    <p class="subtitle" style="margin-top:1rem">
+      Contraseña por defecto: <code>admin123</code><br>
+      (cambiala después en Configuración)
+    </p>
+  </section>
+</main>
+{% endblock %}
