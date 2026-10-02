@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Admin - Lucky Dragons{% endblock %}
+
+{% block content %}
+<header class="header">
+  <div class="logo">⚡ Admin Panel</div>
+  <div class="header-right">
+    <a href="/" class="btn-sm">Ir al juego</a>
+    <a href="/admin/logout" class="btn-sm">Salir</a>
+  </div>
+</header>
+
+<main class="main admin-main">
+  <!-- TABS -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-panel="generate">Generar QR</button>
+    <button class="admin-tab" data-panel="codes">Códigos</button>
+    <button class="admin-tab" data-panel="wins">Premios</button>
+    <button class="admin-tab" data-panel="users">Usuarios</button>
+    <button class="admin-tab" data-panel="prizes">Config Premios</button>
+    <button class="admin-tab" data-panel="settings">Ajustes</button>
+  </div>
+
+  <!-- GENERATE -->
+  <section id="panel-generate" class="card admin-panel active">
+    <h3>Generar código QR de un solo uso</h3>
+    <div class="form-box">
+      <label>Cantidad de monedas</label>
+      <input type="number" id="gen-coins" value="10" min="1" max="10000">
+      <label>Nota (opcional)</label>
+      <input type="text" id="gen-note" placeholder="Ej: para Juan, evento sábado...">
+      <button class="btn primary" onclick="generateCode()">Generar QR</button>
+    </div>
+
+    <div id="qr-result" class="qr-result" style="display:none">
+      <h4>Código generado</h4>
+      <p class="code-display" id="gen-code-text"></p>
+      <img id="gen-qr-img" alt="QR Code">
+      <p class="subtitle">Mostrá o enviá este QR. Solo se puede usar una vez.</p>
+      <button class="btn" onclick="downloadQR()">Descargar QR</button>
+    </div>
+  </section>
+
+  <!-- CODES -->
+  <section id="panel-codes" class="card admin-panel">
+    <h3>Últimos códigos</h3>
+    <button class="btn-sm" onclick="loadCodes()">Actualizar</button>
+    <div id="codes-list" class="table-wrap"></div>
+  </section>
+
+  <!-- WINS -->
+  <section id="panel-wins" class="card admin-panel">
+    <h3>Premios ganados</h3>
+    <button class="btn-sm" onclick="loadWins()">Actualizar</button>
+    <div id="wins-admin-list" class="table-wrap"></div>
+  </section>
+
+  <!-- USERS -->
+  <section id="panel-users" class="card admin-panel">
+    <h3>Usuarios</h3>
+    <button class="btn-sm" onclick="loadUsers()">Actualizar</button>
+    <div id="users-list" class="table-wrap"></div>
+  </section>
+
+  <!-- PRIZES CONFIG -->
+  <section id="panel-prizes" class="card admin-panel">
+    <h3>Configurar premios</h3>
+    <p class="subtitle">Combinación = tres símbolos separados por coma (ej: pikachu,pikachu,pikachu)</p>
+    
+    <div class="form-box">
+      <label>Combinación</label>
+      <input type="text" id="prize-comb" placeholder="pikachu,pikachu,pikachu">
+      <label>Nombre del premio</label>
+      <input type="text" id="prize-name" placeholder="Pikachu Shiny">
+      <label>Descripción</label>
+      <input type="text" id="prize-desc" placeholder="¡3 Pikachu!">
+      <label>
+        <input type="checkbox" id="prize-active" checked> Activo
+      </label>
+      <button class="btn primary" onclick="savePrize()">Guardar premio</button>
+    </div>
+
+    <div id="prizes-list" class="table-wrap" style="margin-top:1rem"></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="panel-settings" class="card admin-panel">
+    <h3>Ajustes</h3>
+    <div class="form-box">
+      <label>Discord Webhook (para notificaciones de premios)</label>
+      <input type="url" id="discord-webhook" placeholder="https://discord.com/api/webhooks/...">
+      <label>Nueva contraseña de admin (dejar vacío para no cambiar)</label>
+      <input type="password" id="new-admin-pass" placeholder="Mínimo 4 caracteres">
+      <button class="btn primary" onclick="saveSettings()">Guardar ajustes</button>
+      <button class="btn" onclick="testWebhook()" style="margin-top:0.5rem;background:#1a8f4a;color:#fff;">🧪 Probar webhook</button>
+      <p class="msg" id="settings-msg"></p>
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin.js"></script>
+{% endblock %}
